@@ -32,7 +32,7 @@ function draw() {
     paths[paths.length - 1].add(current, force);
     
     // Schedule next circle
-    next = millis() + random(20);
+    next = millis() + random(80);
  
     // Store mouse values
     previous.x = current.x;
@@ -91,7 +91,7 @@ class Path {
     for (let i = this.particles.length - 1; i >= 0; i--) {
       // If we shold remove it
       if (this.particles[i].lifespan <= 0) {
-        this.particles.splice(i, 1);
+        this.particles.splice(i, 5);
       // Otherwise, display it
       } else {
         this.particles[i].display(this.particles[i+1]);
@@ -106,9 +106,9 @@ class Particle {
   constructor(position, force, hue) {
     this.position = createVector(position.x, position.y);
     this.velocity = createVector(force.x, force.y);
-    this.drag = 0.99;
-    this.lifespan = 255;
-    this.d = Math.ceil(Math.random()*15+1);;;
+    this.drag = 0.96;
+    this.lifespan = 300;
+    this.d = Math.round(Math.random()*50+5);;;
   }
  
   update() {
@@ -123,8 +123,8 @@ class Particle {
   // Draw particle and connect it with a line
   // Draw a line to another
   display(other) {
-    stroke(0, this.lifespan);
-    fill(0, this.lifespan/2);    
+    stroke(50, this.lifespan);
+    fill(100, this.lifespan/2);    
     ellipse(this.position.x,this.position.y, this.d, this.d);    
     // If we need to draw a line
     if (other) {
