@@ -108,7 +108,7 @@ class Particle {
     this.velocity = createVector(force.x, force.y);
     this.drag = 0.96;
     this.lifespan = 300;
-    this.d = Math.round(Math.random()*50+5);;;
+    this.d = Math.round(Math.random()*25+5);;;
   }
  
   update() {
