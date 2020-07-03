@@ -1,4 +1,3 @@
-
 // All the paths
 let paths = [];
 // Are we painting?
@@ -8,66 +7,72 @@ let next = 0;
 // Where are we now and where were we?
 let current;
 let previous;
-
+ 
 function setup() {
   createCanvas(2500, 3000);
   current = createVector(0,0);
   previous = createVector(0,0);
 };
-
+ 
 function draw() {
   background(255);
-  
   // If it's time for a new point
-  if (millis() > next && painting) {
 
+  if (millis() > next && painting) {
+ 
     // Grab mouse position      
     current.x = mouseX;
     current.y = mouseY;
-
+ 
     // New particle's force is based on mouse movement
     let force = p5.Vector.sub(current, previous);
-    force.mult(0.05);
-
+    force.mult(0.1);
+ 
     // Add new particle
     paths[paths.length - 1].add(current, force);
     
     // Schedule next circle
-    next = millis() + random(100);
-
+    next = millis() + random(20);
+ 
     // Store mouse values
     previous.x = current.x;
     previous.y = current.y;
+  } else if (!painting) {
+    startDraw();
   }
-
+  
+ 
   // Draw all paths
   for( let i = 0; i < paths.length; i++) {
     paths[i].update();
     paths[i].display();
   }
 }
-
-// Start it up
-function mousePressed() {
+function startDraw() {
   next = 0;
   painting = true;
   previous.x = mouseX;
   previous.y = mouseY;
   paths.push(new Path());
 }
-
+ 
+// Start it up
+// function mousePressed() {
+//   startDraw();
+// }
+ 
 // Stop
 // function mouseReleased() {
 //   painting = false;
 // }
-
+ 
 // A Path is a list of particles
 class Path {
   constructor() {
     this.particles = [];
     this.hue = random(100);
   }
-
+ 
   add(position, force) {
     // Add a new particle with a position, force, and hue
     this.particles.push(new Particle(position, force, this.hue));
@@ -95,16 +100,17 @@ class Path {
   
   }  
 }
-
+ 
 // Particles along the path
 class Particle {
   constructor(position, force, hue) {
     this.position = createVector(position.x, position.y);
     this.velocity = createVector(force.x, force.y);
-    this.drag = 1.01;
+    this.drag = 0.99;
     this.lifespan = 255;
+    this.d = Math.ceil(Math.random()*15+1);;;
   }
-
+ 
   update() {
     // Move it
     this.position.add(this.velocity);
@@ -113,16 +119,18 @@ class Particle {
     // Fade it out
     this.lifespan--;
   }
-
+ 
   // Draw particle and connect it with a line
   // Draw a line to another
   display(other) {
     stroke(0, this.lifespan);
     fill(0, this.lifespan/2);    
-    ellipse(this.position.x,this.position.y, 8, 8);    
+    ellipse(this.position.x,this.position.y, this.d, this.d);    
     // If we need to draw a line
     if (other) {
       line(this.position.x, this.position.y, other.position.x, other.position.y);
     }
   }
 }
+
+
